@@ -75,4 +75,4 @@ EXPOSE 3810/udp
 EXPOSE 7642/udp
 
 # Entry Point
-CMD ["/usr/local/bin/MMDVMHost", "/etc/mmdvm/MMDVM.ini"]
+CMD ["/usr/local/bin/MMDVMHost"]
