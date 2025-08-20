@@ -1,0 +1,66 @@
+# Docker
+*.log
+docker-compose.override.yml
+.dockerignore
+
+# Build artifacts and temporary files
+*.tmp
+*.temp
+build/
+dist/
+target/
+
+# Configuration files with secrets
+*.env
+.env.local
+.env.production
+config/*.key
+config/*.pem
+config/secrets/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Logs and runtime data
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Local test containers and images
+test-*
+local-*
+
+# Git merge conflict markers
+*.orig
+
+# MMDVM specific
+config/*.ini
+config/*.cfg
+!config/*.template
+!config/*.example
+
+# Hardware specific
+device-configs/
+hardware-specific/
