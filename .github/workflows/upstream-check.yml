@@ -15,7 +15,10 @@ jobs:
           - { name: "MMDVMHost", url: "https://api.github.com/repos/g4klx/MMDVMHost/commits/master", service: "mmdvmhost" }
           - { name: "DAPNETGateway", url: "https://api.github.com/repos/g4klx/DAPNETGateway/commits/master", service: "dapnetgateway" }
           - { name: "DMRGateway", url: "https://api.github.com/repos/g4klx/DMRGateway/commits/master", service: "dmrgateway" }
-    
+          - { name: "FMGateway", url: "https://api.github.com/repos/g4klx/FMGateway/commits/master", service: "fmgateway" }
+          - { name: "NDXNGateway", url: "https://api.github.com/repos/g4klx/NXDNClients/commits/master", service: "nxdngateway" }
+          - { name: "P25Gateway", url: "https://api.github.com/repos/g4klx/P25Clients/commits/master", service: "p25gateway" }
+          - { name: "YSFGateway", url: "https://api.github.com/repos/g4klx/YSFClients/commits/master", service: "ysfgateway" }    
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -76,6 +76,54 @@ services:
     networks:
       - pistar-net
     restart: unless-stopped
+  
+  fmgateway:
+    image: ghcr.io/mw0mwz/pi-star_docker/fmgateway:latest
+    container_name: fmgateway
+    depends_on:
+      - mmdvmhost
+    volumes:
+      - pistar-config:/opt/pi-star/etc:ro # Read-Only
+      - pistar-logs:/opt/pi-star/log      # Read-Write
+    networks:
+      - pistar-net
+    restart: unless-stopped
+
+  nxdngateway:
+    image: ghcr.io/mw0mwz/pi-star_docker/nxdngateway:latest
+    container_name: nxdngateway
+    depends_on:
+      - mmdvmhost
+    volumes:
+      - pistar-config:/opt/pi-star/etc:ro # Read-Only
+      - pistar-logs:/opt/pi-star/log      # Read-Write
+    networks:
+      - pistar-net
+    restart: unless-stopped
+
+  p25gateway:
+    image: ghcr.io/mw0mwz/pi-star_docker/p25gateway:latest
+    container_name: p25gateway
+    depends_on:
+      - mmdvmhost
+    volumes:
+      - pistar-config:/opt/pi-star/etc:ro # Read-Only
+      - pistar-logs:/opt/pi-star/log      # Read-Write
+    networks:
+      - pistar-net
+    restart: unless-stopped
+
+  ysfgateway:
+    image: ghcr.io/mw0mwz/pi-star_docker/ysfgateway:latest
+    container_name: ysfgateway
+    depends_on:
+      - mmdvmhost
+    volumes:
+      - pistar-config:/opt/pi-star/etc:ro # Read-Only
+      - pistar-logs:/opt/pi-star/log      # Read-Write
+    networks:
+      - pistar-net
+    restart: unless-stopped
 
   dashboard:
     image: ghcr.io/mw0mwz/pi-star_docker/dashboard:latest
