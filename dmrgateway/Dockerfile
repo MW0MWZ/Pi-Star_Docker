@@ -45,10 +45,8 @@ RUN mkdir -p /opt/pi-star/bin \
 RUN addgroup -g 1001 pistar && \
     adduser -D -u 1001 -G pistar pistar
 
-# Copy binary from build stage to Pi-Star bin directory
+# Copy files from build stage to Pi-Star bin directory
 COPY --from=builder /build/DMRGateway/DMRGateway /opt/pi-star/bin/
-
-# Copy audio files from build stage to DMRAudio directory
 COPY --from=builder /build/DMRGateway/Audio/* /opt/pi-star/DMRAudio/
 
 # Set ownership of Pi-Star directories
