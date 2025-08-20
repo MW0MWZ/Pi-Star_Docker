@@ -26,9 +26,6 @@ RUN make clean && make
 # Strip the binary to reduce size
 RUN strip MMDVMHost
 
-# Verify we built for the correct architecture
-RUN file MMDVMHost
-
 # Runtime stage  
 FROM alpine:latest
 
