@@ -6,11 +6,13 @@ on:
     paths: 
       - 'mmdvmhost/**'
       - 'dapnetgateway/**'
+      - 'dmrgateway/**'
   pull_request:
     branches: [main]
     paths:
       - 'mmdvmhost/**' 
       - 'dapnetgateway/**'
+      - 'dmrgateway/**'
   repository_dispatch:
     types: [upstream-change]
 
