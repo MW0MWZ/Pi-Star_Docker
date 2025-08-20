@@ -19,7 +19,9 @@ RUN echo "Building for $TARGETPLATFORM on $BUILDPLATFORM"
 
 # Clone and build P25Clients (contains P25Parrot)
 WORKDIR /build
-RUN git clone https://github.com/g4klx/P25Clients.git
+ARG CACHEBUST=1
+RUN echo "Cache bust: $CACHEBUST"
+RUN git clone --depth=1 https://github.com/g4klx/P25Clients.git
 WORKDIR /build/P25Clients/P25Parrot
 RUN make clean && make
 

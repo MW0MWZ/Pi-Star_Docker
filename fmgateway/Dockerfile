@@ -20,7 +20,9 @@ RUN echo "Building for $TARGETPLATFORM on $BUILDPLATFORM"
 
 # Clone and build FMGateway
 WORKDIR /build
-RUN git clone https://github.com/g4klx/FMGateway.git
+ARG CACHEBUST=1
+RUN echo "Cache bust: $CACHEBUST"
+RUN git clone --depth=1 https://github.com/g4klx/FMGateway.git
 WORKDIR /build/FMGateway
 RUN make clean && make
 

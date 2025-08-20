@@ -19,6 +19,8 @@ RUN echo "Building for $TARGETPLATFORM on $BUILDPLATFORM"
 
 # Clone and build DAPNETGateway
 WORKDIR /build
+ARG CACHEBUST=1
+RUN echo "Cache bust: $CACHEBUST"
 RUN git clone --depth=1 https://github.com/g4klx/DAPNETGateway.git
 WORKDIR /build/DAPNETGateway
 RUN make clean && make
