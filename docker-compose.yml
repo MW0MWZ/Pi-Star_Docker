@@ -65,6 +65,18 @@ services:
     networks:
       - pistar-net
 
+  dmrgateway:
+    image: ghcr.io/mw0mwz/pi-star_docker/dmrgateway:latest
+    container_name: dmrgateway
+    depends_on:
+      - mmdvmhost
+    volumes:
+      - pistar-config:/opt/pi-star/etc:ro # Read-Only
+      - pistar-logs:/opt/pi-star/log      # Read-Write
+    networks:
+      - pistar-net
+    restart: unless-stopped
+
   dashboard:
     image: ghcr.io/mw0mwz/pi-star_docker/dashboard:latest
     ports:
