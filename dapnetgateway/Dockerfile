@@ -21,11 +21,6 @@ RUN echo "Building for $TARGETPLATFORM on $BUILDPLATFORM"
 WORKDIR /build
 RUN git clone https://github.com/g4klx/DAPNETGateway.git
 WORKDIR /build/DAPNETGateway
-
-# Fix missing cstdint include in Conf.cpp
-RUN sed -i '25a #include <cstdint>' Conf.cpp
-
-# Build it
 RUN make clean && make
 
 # Strip the binary to reduce size
