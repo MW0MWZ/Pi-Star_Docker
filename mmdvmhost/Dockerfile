@@ -50,9 +50,26 @@ RUN mkdir -p /etc/mmdvm /var/log/mmdvm && \
 USER mmdvm
 
 # Expose ports for inter-container communication
-# These are NOT published to host unless explicitly mapped
-EXPOSE 62030/udp
-EXPOSE 42000/udp  
-EXPOSE 20010/udp
+# Modem
+EXPOSE 3335/udp
+# Transparent Data
+EXPOSE 40095/udp
+# D-Star
+EXPOSE 20011/udp
+# DMR
+EXPOSE 62032/udp
+# Fusion
+EXPOSE 3200/udp
+# P25
+EXPOSE 32010/udp
+# NXDN
+EXPOSE 14021/udp
+# POCSAG
+EXPOSE 3800/udp
+# FM
+EXPOSE 3810/udp
+# Remote Control
+EXPOSE 7642/udp
 
+# Entry Point
 CMD ["/usr/local/bin/MMDVMHost", "/etc/mmdvm/MMDVM.ini"]
