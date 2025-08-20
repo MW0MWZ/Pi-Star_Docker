@@ -1,4 +1,4 @@
- Build stage
+# Build stage
 FROM alpine:latest AS builder
 
 # Install build dependencies
