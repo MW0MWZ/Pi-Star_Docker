@@ -1,0 +1,62 @@
+name: Check Upstream Changes
+
+on:
+  schedule:
+    # Check every 4 hours
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo:
+          - { name: "MMDVMHost", url: "https://api.github.com/repos/g4klx/MMDVMHost/commits/master", service: "mmdvmhost" }
+          - { name: "DAPNETGateway", url: "https://api.github.com/repos/g4klx/DAPNETGateway/commits/master", service: "dapnetgateway" }
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Check latest commit
+        id: check
+        run: |
+          # Get latest commit SHA from upstream
+          LATEST_SHA=$(curl -s "${{ matrix.repo.url }}" | jq -r '.sha')
+          echo "latest_sha=$LATEST_SHA" >> $GITHUB_OUTPUT
+          echo "Latest commit in ${{ matrix.repo.name }}: $LATEST_SHA"
+          
+          # Check if we've built this SHA before by looking for existing tag
+          if git ls-remote --tags origin | grep -q "upstream-${{ matrix.repo.service }}-$LATEST_SHA"; then
+            echo "Already built ${{ matrix.repo.name }} at commit $LATEST_SHA"
+            echo "trigger_build=false" >> $GITHUB_OUTPUT
+          else
+            echo "New commit found in ${{ matrix.repo.name }}: $LATEST_SHA"
+            echo "trigger_build=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger rebuild
+        if: steps.check.outputs.trigger_build == 'true'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: upstream-change
+          client-payload: |
+            {
+              "service": "${{ matrix.repo.service }}",
+              "upstream_sha": "${{ steps.check.outputs.latest_sha }}",
+              "upstream_repo": "${{ matrix.repo.name }}"
+            }
+
+      - name: Create tracking tag
+        if: steps.check.outputs.trigger_build == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git tag "upstream-${{ matrix.repo.service }}-${{ steps.check.outputs.latest_sha }}"
+          git push origin "upstream-${{ matrix.repo.service }}-${{ steps.check.outputs.latest_sha }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

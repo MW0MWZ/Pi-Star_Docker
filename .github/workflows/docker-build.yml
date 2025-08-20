@@ -3,14 +3,27 @@ name: Build Multi-Platform Docker Images
 on:
   push:
     branches: [main]
-    paths: ['mmdvmhost/**']
+    paths: 
+      - 'mmdvmhost/**'
+      - 'dapnetgateway/**'
   pull_request:
     branches: [main]
-    paths: ['mmdvmhost/**']
+    paths:
+      - 'mmdvmhost/**' 
+      - 'dapnetgateway/**'
+  repository_dispatch:
+    types: [upstream-change]
 
 jobs:
-  build:
+  build-matrix:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [mmdvmhost, dapnetgateway]
+    
+    # Only build the specific service if triggered by upstream, or all services for manual pushes
+    if: github.event_name != 'repository_dispatch' || matrix.service == github.event.client_payload.service
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,25 +42,39 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
+      # Add upstream info to image labels if triggered by upstream
+      - name: Set upstream labels
+        id: upstream
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            echo "upstream_sha=${{ github.event.client_payload.upstream_sha }}" >> $GITHUB_OUTPUT
+            echo "upstream_repo=${{ github.event.client_payload.upstream_repo }}" >> $GITHUB_OUTPUT
+            echo "Building ${{ matrix.service }} due to upstream change in ${{ github.event.client_payload.upstream_repo }}"
+          fi
+          
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/mmdvmhost
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=upstream-${{ steps.upstream.outputs.upstream_sha }},enable=${{ github.event_name == 'repository_dispatch' }}
+          labels: |
+            org.opencontainers.image.upstream.sha=${{ steps.upstream.outputs.upstream_sha }}
+            org.opencontainers.image.upstream.repo=${{ steps.upstream.outputs.upstream_repo }}
             
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./mmdvmhost
+          context: ./${{ matrix.service }}
           platforms: linux/amd64,linux/arm64,linux/arm/v6
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
