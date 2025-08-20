@@ -10,7 +10,8 @@ RUN apk add --no-cache \
     cmake \
     linux-headers \
     musl-dev \
-    binutils
+    binutils \
+    libmd-dev
 
 # Build arguments for cross-compilation
 ARG TARGETPLATFORM
@@ -33,7 +34,8 @@ FROM alpine:latest
 RUN apk add --no-cache \
     libstdc++ \
     libgcc \
-    tzdata
+    tzdata \
+    libmd
 
 # Create Pi-Star directory structure
 RUN mkdir -p /opt/pi-star/bin \
