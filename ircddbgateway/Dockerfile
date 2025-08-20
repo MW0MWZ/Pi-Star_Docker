@@ -11,7 +11,7 @@ RUN apk add --no-cache \
     linux-headers \
     musl-dev \
     binutils \
-    wxgtk-dev
+    wxwidgets-dev
 
 # Build arguments for cross-compilation
 ARG TARGETPLATFORM
@@ -25,8 +25,14 @@ WORKDIR /build/ircDDBGateway
 
 # Create Pi-Star directory structure for build
 RUN mkdir -p /opt/pi-star/bin \
-             /opt/pi-star/etc \
+             /opt/pi-star/etc/ircDDBGateway \
              /opt/pi-star/log
+
+# Fix the Config
+RUN sed -i 's/^export DATADIR.*/export DATADIR \?= \/opt\/pi-star\/etc\/ircDDBGateway/g' Makefile 
+RUN sed -i 's/^export LOGDIR.*/export LOGDIR  \?= \/opt\/pi-star\/log/g' Makefile
+RUN sed -i 's/^export CONFDIR.*/export CONFDIR \?= \/opt\/pi-star\/etc/g' Makefile
+RUN sed -i 's/^export BINDIR.*/export BINDIR  \?= \/opt\/pi-star\/bin/g' Makefile
 
 # Build the project
 RUN make clean && make -j $(nproc) && make install
@@ -42,11 +48,11 @@ RUN apk add --no-cache \
     libstdc++ \
     libgcc \
     tzdata \
-    wxgtk-base
+    wxwidgets
 
 # Create Pi-Star directory structure
 RUN mkdir -p /opt/pi-star/bin \
-             /opt/pi-star/etc \
+             /opt/pi-star/etc/ircDDBGateway \
              /opt/pi-star/log
 
 # Create non-root user

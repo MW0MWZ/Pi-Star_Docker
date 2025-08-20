@@ -55,6 +55,16 @@ services:
       - pistar-net
     restart: unless-stopped
 
+  ircddbgateway:
+    image: ghcr.io/mw0mwz/pi-star_docker/ircddbgateway:latest
+    depends_on:
+      - mmdvmhost
+    volumes:
+      - pistar-config:/opt/pi-star/etc:ro # Read-Only
+      - pistar-logs:/opt/pi-star/log      # Read-Write
+    networks:
+      - pistar-net
+
   dmrgateway:
     image: ghcr.io/mw0mwz/pi-star_docker/dmrgateway:latest
     depends_on:
