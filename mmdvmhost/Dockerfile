@@ -1,5 +1,5 @@
-# Build stage
-FROM --platform=$BUILDPLATFORM alpine:latest AS builder
+# Build stage - use target platform, not build platform
+FROM alpine:latest AS builder
 
 # Install build dependencies
 RUN apk add --no-cache \
@@ -25,6 +25,9 @@ RUN make clean && make
 
 # Strip the binary to reduce size
 RUN strip MMDVMHost
+
+# Verify we built for the correct architecture
+RUN file MMDVMHost
 
 # Runtime stage  
 FROM alpine:latest
