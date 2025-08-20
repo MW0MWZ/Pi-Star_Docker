@@ -60,7 +60,7 @@ USER pistar
 WORKDIR /opt/pi-star
 
 # Expose ports for inter-container communication
-# DAPNET network communication
+# DAPNETGateway network communication
 EXPOSE 4800/udp
 
 # Use the Pi-Star path structure
