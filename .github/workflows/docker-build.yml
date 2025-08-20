@@ -10,8 +10,12 @@ on:
       - 'dmrgateway/**'
       - 'fmgateway/**'
       - 'nxdngateway/**'
+      - 'nxdnparrot/**'
       - 'p25gateway/**'
+      - 'p25parrot/**'
       - 'ysfgateway/**'
+      - 'ysfparrot/**'
+      - 'dgidgateway/**'
   pull_request:
     branches: [main]
     paths:
@@ -21,8 +25,12 @@ on:
       - 'dmrgateway/**'
       - 'fmgateway/**'
       - 'nxdngateway/**'
+      - 'nxdnparrot/**'
       - 'p25gateway/**'
+      - 'p25parrot/**'
       - 'ysfgateway/**'
+      - 'ysfparrot/**'
+      - 'dgidgateway/**'
   repository_dispatch:
     types: [upstream-change]
 
@@ -31,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [mmdvmhost, ircddbgateway, dapnetgateway, dmrgateway, fmgateway, nxdngateway, p25gateway, ysfgateway]
+        service: [mmdvmhost, ircddbgateway, dapnetgateway, dmrgateway, fmgateway, nxdngateway, nxdnparrot, p25gateway, p25parrot, ysfgateway, ysfparrot, dgidgateway]
     
     steps:
       - name: Check if should build this service

@@ -16,9 +16,10 @@ jobs:
           - { name: "DAPNETGateway", url: "https://api.github.com/repos/g4klx/DAPNETGateway/commits/master", service: "dapnetgateway" }
           - { name: "DMRGateway", url: "https://api.github.com/repos/g4klx/DMRGateway/commits/master", service: "dmrgateway" }
           - { name: "FMGateway", url: "https://api.github.com/repos/g4klx/FMGateway/commits/master", service: "fmgateway" }
-          - { name: "NDXNGateway", url: "https://api.github.com/repos/g4klx/NXDNClients/commits/master", service: "nxdngateway" }
-          - { name: "P25Gateway", url: "https://api.github.com/repos/g4klx/P25Clients/commits/master", service: "p25gateway" }
-          - { name: "YSFGateway", url: "https://api.github.com/repos/g4klx/YSFClients/commits/master", service: "ysfgateway" }    
+          - { name: "NXDNClients", url: "https://api.github.com/repos/g4klx/NXDNClients/commits/master", services: ["nxdngateway", "nxdnparrot"] }
+          - { name: "P25Clients", url: "https://api.github.com/repos/g4klx/P25Clients/commits/master", services: ["p25gateway", "p25parrot"] }
+          - { name: "YSFClients", url: "https://api.github.com/repos/g4klx/YSFClients/commits/master", services: ["ysfgateway", "ysfparrot", "dgidgateway"] }
+          - { name: "ircDDBGateway", url: "https://api.github.com/repos/g4klx/ircDDBGateway/commits/master", services: ["ircddbgateway"] }
     steps:
       - name: Checkout
         uses: actions/checkout@v4
